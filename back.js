@@ -51,14 +51,14 @@ listText = async (req, res) => {
 }
 
 createText = async (req, res) => {
-    console.log(req.body)
     const { text } = req.body
-    return res.json(await Text.create({ text }))
+    console.log("iu", text)
+    return text ? res.json(await Text.create({ text })) : res.json({ message: "text cannot be null" })
 }
 
 deleteText = async (req, res) => {
-    const id_text = req.params.id
-    return res.json(await Text.destroy({ where: { id_text } }))
+    const id = req.params.id
+    return res.json(await Text.destroy({ where: { id } }))
 }
 
 //RUN SERVER

@@ -5,23 +5,55 @@
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
     <title>Front</title>
   </head>
-  <body>
-    <p id="text"></p>
-    <script>
-      getGET = async () => {
-        const response = await fetch("/get")
-          .then((response) => response.json())
-          .then((data) => data);
-        text = document.querySelector("#text");
-        text.textContent = response.text;
-      };
-      getGET();
-    </script>
-    <form>
+</head>
+<body>
+    <div id="list"></div>
+    <form >
       <label for="texto">Texto: </label><br />
       <input type="text" id="texto" name="texto" />
+      <button id="botaoEnviar">Enviar</button>
     </form>
-    <br />
-    <button type="submit">Enviar</button>
+    <script>
+        listText = async() => await fetch("/list").then(response => response.json()).then(data => data)
+        createText = async(data) => {
+            const response = await fetch("/create",{
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method:"POST",
+                body: JSON.stringify(data)}).then(response => response.json()).then(data => data)
+            return response
+        }
+        deleteText = async(id) => {
+            const response = await fetch(`/delete/${id}`,{method:'delete'}).then(response => response.json()).then(data => data)
+            if(response === 1){
+                const textElement = document.querySelector('#list')
+                textElement.innerHTML = ""
+                listAllAndPrintInScreen()
+            }
+            return response
+        }
+        //List texts
+        listAllAndPrintInScreen = () => {
+            listText().then(texts =>{
+                texts.forEach(text => {
+                    const textElement = document.querySelector('#list')
+                    textElement.innerHTML += `<p>${text.text}<button style="margin-left: 20px" onClick="deleteText(${text.id})">delete</button></p>`
+                })
+            })
+        }
+        listAllAndPrintInScreen()
+        //Criar
+        document.querySelector("#botaoEnviar").addEventListener("click", evt =>{
+            evt.preventDefault()
+            const input = document.querySelector("#texto")
+            createText({text: input.value}).then(()=>{
+                input.value = ""
+                const textElement = document.querySelector('#list')
+                textElement.innerHTML = ""
+                listAllAndPrintInScreen()
+            })
+        })
+    </script>
   </body>
 </html>
