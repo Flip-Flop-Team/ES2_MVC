@@ -14,6 +14,7 @@
       <button id="botaoEnviar">Enviar</button>
     </form>
     <script>
+        //CRUD
         listText = async() => await fetch("/list").then(response => response.json()).then(data => data)
         createText = async() => {
             const input = document.querySelector("#texto")
@@ -39,7 +40,8 @@
             }
             return response
         }
-        //submit
+        //Listen button
+        //Observer pattern and constructor pattern
         function listenSubmitButton(){
             functionsToCall = []
             this.subscribe = functionToSubscribe => {
@@ -55,7 +57,7 @@
                 this.notifyAll()
             })
         }
-        //List texts
+        //Utils
         listAllAndPrintInScreen = () => {
             listText().then(texts =>{
                 texts.forEach(text => {
@@ -64,10 +66,11 @@
                 })
             })
         }
+
+        //Execute
         listAllAndPrintInScreen()
         listen = new listenSubmitButton()
         listen.subscribe(createText)
-        
     </script>
   </body>
 </html>
