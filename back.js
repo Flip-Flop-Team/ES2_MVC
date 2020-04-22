@@ -52,7 +52,6 @@ listText = async (req, res) => {
 
 createText = async (req, res) => {
     const { text } = req.body
-    console.log("iu", text)
     return text ? res.json(await Text.create({ text })) : res.json({ message: "text cannot be null" })
 }
 
