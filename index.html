@@ -15,13 +15,19 @@
     </form>
     <script>
         listText = async() => await fetch("/list").then(response => response.json()).then(data => data)
-        createText = async(data) => {
+        createText = async() => {
+            const input = document.querySelector("#texto")
+            const text = input.value
+            input.value = ""
             const response = await fetch("/create",{
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method:"POST",
-                body: JSON.stringify(data)}).then(response => response.json()).then(data => data)
+                body: JSON.stringify({text})}).then(response => response.json()).then(data => data)
+                const textElement = document.querySelector('#list')
+            textElement.innerHTML = ""
+            listAllAndPrintInScreen()
             return response
         }
         deleteText = async(id) => {
@@ -33,6 +39,22 @@
             }
             return response
         }
+        //submit
+        function listenSubmitButton(){
+            functionsToCall = []
+            this.subscribe = functionToSubscribe => {
+                functionsToCall.push(functionToSubscribe)
+            }
+            this.notifyAll = () => {
+                functionsToCall.forEach(functionToExecute => {
+                    functionToExecute()
+                })
+            }
+            document.querySelector("#botaoEnviar").addEventListener("click", evt =>{
+                evt.preventDefault()
+                this.notifyAll()
+            })
+        }
         //List texts
         listAllAndPrintInScreen = () => {
             listText().then(texts =>{
@@ -43,17 +65,9 @@
             })
         }
         listAllAndPrintInScreen()
-        //Criar
-        document.querySelector("#botaoEnviar").addEventListener("click", evt =>{
-            evt.preventDefault()
-            const input = document.querySelector("#texto")
-            createText({text: input.value}).then(()=>{
-                input.value = ""
-                const textElement = document.querySelector('#list')
-                textElement.innerHTML = ""
-                listAllAndPrintInScreen()
-            })
-        })
+        listen = new listenSubmitButton()
+        listen.subscribe(createText)
+        
     </script>
   </body>
 </html>
