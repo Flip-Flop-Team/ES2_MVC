@@ -38,7 +38,7 @@
             listText().then(texts =>{
                 texts.forEach(text => {
                     const textElement = document.querySelector('#list')
-                    textElement.innerHTML += `<p>${text.text}<button style="margin-left: 20px" onClick="deleteText(${text.id})">delete</button></p>`
+                    textElement.innerHTML += `<p>${text.text}<button style="margin-left: 20px" onClick="deleteText(${text.id})">x</button></p>`
                 })
             })
         }
