@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
     <title>Front</title>
-</head>
-<body>
+  </head>
+  <body>
     <p id="text"></p>
     <script>
-        getGET = async() => {
-            const response = await fetch("/get").then(response => response.json()).then(data => data)
-            text = document.querySelector("#text")
-            text.textContent = response.text
-        }
-        getGET()
+      getGET = async () => {
+        const response = await fetch("/get")
+          .then((response) => response.json())
+          .then((data) => data);
+        text = document.querySelector("#text");
+        text.textContent = response.text;
+      };
+      getGET();
     </script>
-</body>
+    <form>
+      <label for="texto">Texto: </label><br />
+      <input type="text" id="texto" name="texto" />
+    </form>
+    <br />
+    <button type="submit">Enviar</button>
+  </body>
 </html>
